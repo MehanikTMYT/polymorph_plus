@@ -18,6 +18,9 @@
 package com.illusivesoulworks.polymorph;
 
 import com.illusivesoulworks.polymorph.api.PolymorphApi;
+import com.illusivesoulworks.polymorph.common.brewing.BrewingCandidates;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
 import com.illusivesoulworks.polymorph.client.ClientEventsListener;
 import com.illusivesoulworks.polymorph.common.CommonEventsListener;
 import com.illusivesoulworks.polymorph.common.PolymorphNeoForgeCapabilities;
@@ -30,7 +33,6 @@ import com.illusivesoulworks.polymorph.common.network.client.CPacketPlayerRecipe
 import com.illusivesoulworks.polymorph.common.network.server.SPacketHighlightRecipe;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketPackPriority;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketPlayerRecipeSync;
-import com.illusivesoulworks.polymorph.common.network.server.SPacketRecipeHandshake;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketRecipesList;
 import com.illusivesoulworks.polymorph.common.network.server.SPacketUpdatePreview;
 import net.neoforged.bus.api.IEventBus;
@@ -46,6 +48,16 @@ public class PolymorphNeoForgeMod {
 
   public PolymorphNeoForgeMod(IEventBus eventBus) {
     PolymorphCommonMod.init();
+    BrewingCandidates.extraSource = (brewing, bottle, reagent, out) -> {
+
+      for (IBrewingRecipe recipe : brewing.getRecipes()) {
+        ItemStack output = recipe.getOutput(bottle, reagent);
+
+        if (!output.isEmpty()) {
+          out.add(output);
+        }
+      }
+    };
     PolymorphNeoForgeCapabilities.setup(eventBus);
     eventBus.addListener(this::setup);
     eventBus.addListener(this::clientSetup);
@@ -76,8 +88,6 @@ public class PolymorphNeoForgeMod {
     registrar.playToClient(SPacketPlayerRecipeSync.TYPE, SPacketPlayerRecipeSync.STREAM_CODEC,
         ClientPayloadHandler.getInstance()::handlePacket);
     registrar.playToClient(SPacketUpdatePreview.TYPE, SPacketUpdatePreview.STREAM_CODEC,
-        ClientPayloadHandler.getInstance()::handlePacket);
-    registrar.playToClient(SPacketRecipeHandshake.TYPE, SPacketRecipeHandshake.STREAM_CODEC,
         ClientPayloadHandler.getInstance()::handlePacket);
 
     registrar.playToServer(CPacketPersistentRecipeSelection.TYPE,
