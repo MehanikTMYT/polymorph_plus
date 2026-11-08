@@ -23,9 +23,6 @@
     ],
     "cardinal-components": [
       "com.illusivesoulworks.polymorph.common.components.PolymorphFabricComponents"
-    ],
-    "jei_mod_plugin": [
-      "com.illusivesoulworks.polymorph.common.integration.PolymorphJeiPlugin"
     ]
   },
   "custom": {
@@ -47,6 +44,5 @@
     "java": ">=${java_version}"
   },
   "breaks": {
-    "jei": "<${jei_version}"
   }
 }

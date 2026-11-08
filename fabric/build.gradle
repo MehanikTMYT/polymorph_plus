@@ -18,7 +18,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly "mezz.jei:jei-26.1.2-common-api:${jei_version}"
+    // синк/порт 26.1.2: compileOnly JEI удалена — политика EMI-only
     // -no-remap variant: no mappings configuration; mod* prefixes replaced by plain ones.
     minecraft "com.mojang:minecraft:${minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
@@ -65,19 +65,12 @@ loom {
 sourceSets.main.java {
     exclude 'com/illusivesoulworks/polymorph/common/integration/quickbench/**'
     exclude 'com/illusivesoulworks/polymorph/mixin/integration/quickbench/**'
-    exclude 'com/illusivesoulworks/polymorph/mixin/integration/roughlyenoughitems/**'
-    exclude 'com/illusivesoulworks/polymorph/mixin/integration/jei/**'
-    exclude 'com/illusivesoulworks/polymorph/integration/jei/**'
 }
 
 // JEI / REI / QuickBench source files also arrive via the multiloader `commonJava`
 // configuration (added by multiloader-loader.gradle). Filter them out at task level
 // since sourceSets excludes don't apply to externally-sourced files.
 tasks.named('compileJava', JavaCompile).configure {
-    exclude 'com/illusivesoulworks/polymorph/mixin/integration/jei/**'
-    exclude 'com/illusivesoulworks/polymorph/integration/jei/**'
-    exclude 'com/illusivesoulworks/polymorph/mixin/integration/roughlyenoughitems/**'
-    exclude 'com/illusivesoulworks/polymorph/integration/roughlyenoughitems/**'
     exclude 'com/illusivesoulworks/polymorph/common/integration/quickbench/**'
     exclude 'com/illusivesoulworks/polymorph/mixin/integration/quickbench/**'
 }
@@ -97,7 +90,6 @@ processResources {
     inputs.property "issues_url", project.issues_url
     inputs.property "minecraft_version_range_alt", project.minecraft_version_range_alt
     inputs.property "java_version", project.java_version
-    inputs.property "jei_version", project.jei_version
 
     filesMatching("fabric.mod.json") {
         expand([
@@ -111,7 +103,6 @@ processResources {
                 "issues_url"                 : project.issues_url,
                 "minecraft_version_range_alt": project.minecraft_version_range_alt,
                 "java_version"               : project.java_version,
-                "jei_version"                : project.jei_version,
         ])
     }
 

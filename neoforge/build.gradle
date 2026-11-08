@@ -69,7 +69,7 @@ tasks.named('jar').configure {
 }
 
 dependencies {
-    compileOnly "mezz.jei:jei-26.1.2-common-api:${jei_version}"
+    // синк/порт 26.1.2: compileOnly JEI удалена — политика EMI-only
     // JEI, REI and FastWorkbench compile references. No 26.x maven publication yet, so they come
     // from the folder local_mod_jars points at and are skipped when absent.
     if (localModJars.isDirectory()) {

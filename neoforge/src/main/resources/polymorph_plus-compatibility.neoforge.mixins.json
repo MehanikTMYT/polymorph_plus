@@ -3,8 +3,7 @@
   "package": "com.illusivesoulworks.polymorph.mixin.integration",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "fastbench.MixinFastBenchUtil",
-    "roughlyenoughitems.MixinInternalWidgets"
+    "fastbench.MixinFastBenchUtil"
   ],
   "plugin": "com.illusivesoulworks.polymorph.mixin.IntegratedMixinPlugin",
   "minVersion": "0.8"
